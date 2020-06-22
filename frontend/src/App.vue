@@ -2,42 +2,43 @@
   <v-app>
     <v-app-bar
       app
-      color="primary"
+      color="#2d2e2f"
       dark
     >
       <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
+        <h2>
+        <v-icon size="35">
+          library_add_check
+        </v-icon>
+          To do app
+        </h2>
       </div>
 
       <v-spacer></v-spacer>
 
       <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
+        href="https://github.com/lucasfrancaid/Todo"
         target="_blank"
         text
       >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
+        <span class="mr-2">My Github </span>
+        <v-img 
+          src="./assets/github.png"
+          width="40"
+        />
       </v-btn>
     </v-app-bar>
 
     <v-main>
+      <div class="d-flex align-center justify-center mt-10 mb-0">
+        <h1 style="color: rgba(0, 0, 0, 0.54);">
+        <v-icon size="50" class="success--text">
+          library_add_check
+        </v-icon>
+
+          To Do List
+        </h1>
+      </div>
       <Todo/>
     </v-main>
   </v-app>
