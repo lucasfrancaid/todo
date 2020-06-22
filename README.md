@@ -6,6 +6,9 @@
     <p align="center">
       Um aplicativo web de lista de tarefas, criado utilizando Django Rest Framework e Vue.js<br/>
     </p>
+    <p align="center">
+      <img src="https://gist.githubusercontent.com/lucasfrancaid/13f62a71b0ba106a0dd5c5f6ca2d9dff/raw/30f238a757d1e3b50896874ccdd55ae70aec1905/00_todo_start.png" alt="start" />
+    </p>
   </p>
 </p>
 
