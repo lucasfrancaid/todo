@@ -37,27 +37,22 @@
       </v-btn>
     </v-app-bar>
 
-    <v-content>
-      <HelloWorld/>
-      <Tasks/>
-    </v-content>
+    <v-main>
+      <Todo/>
+    </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
-import Tasks from './components/Tasks';
+  import Todo from './components/Todo';
 
-export default {
-  name: 'App',
+  export default {
+    name: 'App',
 
-  components: {
-    HelloWorld,
-    Tasks
-  },
+    components: {
+      Todo,
+    },
 
-  data: () => ({
-    //
-  }),
-};
+    data: () => ({}),
+  };
 </script>
