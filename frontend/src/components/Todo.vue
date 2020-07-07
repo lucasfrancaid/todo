@@ -16,15 +16,6 @@
 			</v-fade-transition>
 		</v-text-field>
 
-		<!--<h2 class="display-1 pl-1">
-			Tasks:&nbsp;
-			<v-fade-transition leave-absolute>
-				<span :key="`tasks-${tasks.length}`">
-					{{ tasks.length }}
-				</span>
-			</v-fade-transition>
-		</h2>-->
-
 		<v-divider class="mt-0"></v-divider>
 
 		<v-row
@@ -130,6 +121,25 @@
 				</template>
 			</v-slide-y-transition>
 		</v-card>
+
+		<v-snackbar
+			v-model="snackbar"
+			:multi-line="true"
+			:color="alertColor"
+			>
+			{{ text }}
+			<template v-slot:action="{ attrs }">
+				<v-btn
+				color="white"
+				text
+				v-bind="attrs"
+				@click="snackbar = false"
+				>
+				Close
+				</v-btn>
+			</template>
+		</v-snackbar>
+	
 	</v-container>
 </template>
 
@@ -141,6 +151,9 @@
 		data: () => ({
 			tasks: [],
 			task: null,
+			snackbar: false,
+			text: 'Alert message',
+			alertColor: 'success',
 		}),
 		created() {
 			api.get('api/task')
@@ -148,7 +161,10 @@
 					task.editing = false
 					this.tasks.push(task)
 				}))
-				.catch(err => console.error(err.data)
+				.catch(err => {
+					console.error(err.data)
+					this.showAlert('Tasks could not loaded!', 'error')
+				}
 			);
 		},
 		computed: {
@@ -182,9 +198,12 @@
 							editing: false,
 						})
 						this.task = null
-						console.log('Task was created!')
+						this.showAlert('Task was created!')
 					})
-					.catch(err => console.error(err.data)
+					.catch(err => {
+						console.error(err.data)
+						this.showAlert('Task could not created!', 'error')
+					}
 				);
 			},
 			updateTask (task) {
@@ -192,9 +211,12 @@
 					.then((res) => {
 						const itemIndex = this.tasks.findIndex(element => element.id === res.data.id)
 						this.tasks[itemIndex] = task
-						console.log('Task was updated!')
+						this.showAlert('Text was updated!')
 					})
-					.catch(err => console.error(err.data)
+					.catch(err => {
+						console.error(err.data)
+						this.showAlert('Task could not updated!', 'error')
+					}
 				);
 			},
 			removeTask (id) {
@@ -202,9 +224,12 @@
 					.then(() => {
 						const itemIndex = this.tasks.findIndex(element => element.id === id)
 						this.tasks.splice(itemIndex, 1)
-						console.log('Task was deleted!')
+						this.showAlert('Task was deleted!')
 					})
-					.catch(err => console.error(err.data)
+					.catch(err => {
+						console.error(err.data)
+						this.showAlert('Task could not deleted!', 'error')
+					}
 				);
 			},
 			doneEdit (event, index) {
@@ -220,6 +245,11 @@
 			},
 			cancelEdit (index) {
 				this.tasks[index].editing = false
+			},
+			showAlert (message='Success', type='success') {
+				this.snackbar = true
+				this.text = message
+				this.alertColor = type
 			}
 		},
 	}
