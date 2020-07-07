@@ -19,11 +19,11 @@
 		<v-divider class="mt-0"></v-divider>
 
 		<v-row
-			class="my-1"
+			class="my-1 divider"
 			align="center"
 		>
 
-			<strong class="ml-16 mr-8 text--darken-2">
+			<strong class="divider-item text--darken-2">
 			TASKS:
 			<v-fade-transition leave-absolute>
 				<span :key="`tasks-${tasks.length}`">
@@ -34,13 +34,13 @@
 
 			<v-divider vertical></v-divider>
 
-			<strong class="mx-12 text--darken-2">
+			<strong class="divider-item text--darken-2">
 			TO DO: {{ remainingTasks }}
 			</strong>
 
 			<v-divider vertical></v-divider>
 
-			<strong class="ml-10 mr-2 text--darken-2">
+			<strong class="divider-item text--darken-2">
 			DONE: {{ completedTasks }}
 			</strong>
 
@@ -138,7 +138,7 @@
 				</v-btn>
 			</template>
 		</v-snackbar>
-	
+
 	</v-container>
 </template>
 
@@ -253,3 +253,12 @@
 		},
 	}
 </script>
+
+<style scoped>
+.divider {
+	justify-content: center;
+}
+.divider-item {
+	margin: 0 7%
+}
+</style>
