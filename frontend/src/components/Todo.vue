@@ -44,14 +44,13 @@
 			DONE: {{ completedTasks }}
 			</strong>
 
-			<v-spacer></v-spacer>
-
-			<v-progress-circular
-			:value="progress"
-			color="success"
-			class="mr-4"
-			></v-progress-circular>
 		</v-row>
+
+		<v-progress-linear
+		:value="progress"
+		color="success"
+		class=""
+		></v-progress-linear>
 
 		<v-divider class="mb-5"></v-divider>
 
