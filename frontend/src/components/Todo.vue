@@ -64,58 +64,73 @@
 
 		<v-divider class="mb-5"></v-divider>
 
-			<v-card v-if="tasks.length > 0">
-				<v-slide-y-transition
-				class="py-0"
-				group
-				name="v-list"
-				>
-					<template v-for="(task, i) in tasks">
-						<v-divider
-						v-if="i !== 0"
-						:key="`${i}-divider`"
-						></v-divider>
+		<v-card v-if="tasks.length > 0">
+			<v-slide-y-transition
+			class="py-0"
+			group
+			name="v-list"
+			>
+				<template v-for="(task, i) in tasks">
+					<v-divider
+					v-if="i !== 0"
+					:key="`${i}-divider`"
+					></v-divider>
 
-						<v-list-item :key="`${i}-${task.id}`">
-							<v-list-item-action>
-								<v-checkbox
-								@change="updateTask(task)"
-								v-model="task.done"
-								:color="task.done && 'grey' || 'success'"
-								>
-								<template v-slot:label>
-									<div
-									:class="task.done && 'grey--text' || 'success--text'"
-									class="ml-4"
-									v-text="task.title"
-									></div>
-								</template>
-								</v-checkbox>
-							</v-list-item-action>
-
-							<v-scroll-x-transition>
-								<v-icon
-								v-if="task.done"
-								color="success"
-								class="mr-8"
-								>
-								done
-								</v-icon>
-							</v-scroll-x-transition>
-
-							<v-spacer></v-spacer>
-
-							<v-icon
-							:key="`${task.id}-delete`"
-							@click="removeTask(task.id)"
+					<v-list-item :key="`${i}-${task.id}`">
+						<v-list-item-action>
+							<v-checkbox
+							@change="updateTask(task)"
+							v-model="task.done"
+							:color="task.done && 'grey' || 'success'"
 							>
-							delete
+							</v-checkbox>
+						</v-list-item-action>
+						<template v-if="!task.editing">
+							<v-list-item-content>
+								<div
+								:class="task.done && 'grey--text' || 'success--text'"
+								class="ml-4"
+								v-text="task.title"
+								@click="task.editing = true"
+								></div>
+							</v-list-item-content>
+						</template>
+						<v-text-field
+							:value="task.title"
+							@blur="doneEdit($event, i)"
+							@keyup.enter="doneEdit($event, i)"
+							@keyup.esc="cancelEdit(i)"
+							class="ml-1"
+							color="primary"
+							autofocus
+							hide-details
+							flat
+							solo
+							v-else
+						></v-text-field>
+
+						<v-scroll-x-transition>
+							<v-icon
+							v-if="task.done"
+							color="success"
+							class="ml-4"
+							>
+							done
 							</v-icon>
-						</v-list-item>
-					</template>
-				</v-slide-y-transition>
-			</v-card>
-		</v-container>
+						</v-scroll-x-transition>
+
+						<v-icon
+						:key="`${task.id}-delete`"
+						@click="removeTask(task.id)"
+						class="ml-8"
+						>
+						delete
+						</v-icon>
+					</v-list-item>
+				</template>
+			</v-slide-y-transition>
+		</v-card>
+	</v-container>
 </template>
 
 <script>
@@ -129,11 +144,13 @@
 		}),
 		created() {
 			api.get('api/task')
-				.then((res) => res.data.map(task => this.tasks.push(task)))
-				.catch(err => console.log(err.data)
+				.then((res) => res.data.map(task => {
+					task.editing = false
+					this.tasks.push(task)
+				}))
+				.catch(err => console.error(err.data)
 			);
 		},
-
 		computed: {
 			completedTasks () {
 				return this.tasks.filter(task => task.done).length
@@ -144,28 +161,30 @@
 			remainingTasks () {
 				return this.tasks.length - this.completedTasks
 			},
-		},
 
+		},
 		methods: {
 			createTask () {
-				const data = {
+				const task = {
 					done: false,
 					title: this.task,
 					description: '',
-				}
+					editing: false,
+				};
 
-				api.post('api/task', data)
+				api.post('api/task', task)
 					.then((res) => {
 						const data = res.data;
-						console.log('data post', data)
 						this.tasks.push({
 							id: data.id,
 							title: this.task,
 							description: data.description,
+							editing: false,
 						})
 						this.task = null
+						console.log('Task was created!')
 					})
-					.catch(err => console.log(err.data)
+					.catch(err => console.error(err.data)
 				);
 			},
 			updateTask (task) {
@@ -173,20 +192,35 @@
 					.then((res) => {
 						const itemIndex = this.tasks.findIndex(element => element.id === res.data.id)
 						this.tasks[itemIndex] = task
+						console.log('Task was updated!')
 					})
-					.catch(err => console.log(err.data)
+					.catch(err => console.error(err.data)
 				);
 			},
 			removeTask (id) {
 				api.delete(`api/task/${id}`)
-					.then((res) => {
-						console.log('Task was deleted', res.data)
+					.then(() => {
 						const itemIndex = this.tasks.findIndex(element => element.id === id)
 						this.tasks.splice(itemIndex, 1)
+						console.log('Task was deleted!')
 					})
-					.catch(err => console.log(err.data)
+					.catch(err => console.error(err.data)
 				);
+			},
+			doneEdit (event, index) {
+				const title = event.target.value
+				if (title !== this.tasks[index].title) {
+					let task = this.tasks[index]
+					task.title = title
+					task.editing = false
+					this.updateTask(task)
+				} else {
+					this.tasks[index].editing = false
+				}
+			},
+			cancelEdit (index) {
+				this.tasks[index].editing = false
 			}
 		},
-	}  
+	}
 </script>
