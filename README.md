@@ -8,7 +8,7 @@
       <a href="https://todovuejs-lucasfranca.herokuapp.com/"><strong>https://todovuejs-lucasfranca.herokuapp.com/</strong></a>
     </p>
     <p align="center">
-      <img src="https://gist.githubusercontent.com/lucasfrancaid/13f62a71b0ba106a0dd5c5f6ca2d9dff/raw/30f238a757d1e3b50896874ccdd55ae70aec1905/00_todo_start.png" alt="start" />
+      <img src="https://gist.githubusercontent.com/lucasfrancaid/13f62a71b0ba106a0dd5c5f6ca2d9dff/raw/d1c6b58b79ca481cbb0578b0d248879143cf265c/00_todo_start.png" alt="start" />
     </p>
   </p>
 </p>
