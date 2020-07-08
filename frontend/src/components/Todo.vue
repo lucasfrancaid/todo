@@ -47,112 +47,91 @@
 		</v-row>
 
 		<v-progress-linear
-		:value="progress"
-		color="success"
-		class=""
+			:value="progress"
+			color="success"
+			class=""
 		></v-progress-linear>
 
 		<v-divider class="mb-5"></v-divider>
 
-		<v-card v-if="tasks.length > 0">
-			<v-slide-y-transition
-			class="py-0"
-			group
-			name="v-list"
-			>
-				<template v-for="(task, i) in tasks">
-					<v-divider
-					v-if="i !== 0"
-					:key="`${i}-divider`"
-					></v-divider>
+		<template v-if="tasks.length > 0">
+			<draggable v-model="tasks">
+				<transition-group>
+					<v-card v-for="(task, index) in tasks" :key="index">
+						<v-divider
+						v-if="index !== 0"
+						:key="`${index}-divider`"
+						></v-divider>
 
-					<v-list-item :key="`${i}-${task.id}`">
-						<v-list-item-action>
-							<v-checkbox
-							@change="updateTask(task)"
-							v-model="task.done"
-							:color="task.done && 'grey' || 'success'"
-							>
-							</v-checkbox>
-						</v-list-item-action>
-						<template v-if="!task.editing">
-							<v-list-item-content>
-								<div
-								:class="task.done && 'grey--text' || 'success--text'"
-								class="ml-4"
-								v-text="task.title"
-								@click="task.editing = true"
-								></div>
-							</v-list-item-content>
-						</template>
-						<v-text-field
-							:value="task.title"
-							@blur="doneEdit($event, i)"
-							@keyup.enter="doneEdit($event, i)"
-							@keyup.esc="cancelEdit(i)"
-							class="ml-1"
-							color="primary"
-							autofocus
-							hide-details
-							flat
-							solo
-							v-else
-						></v-text-field>
+						<v-list-item :key="`${index}-${task.id}`">
+							<v-list-item-action class="mr-3">
+								<v-checkbox
+								@change="updateTask(task)"
+								v-model="task.done"
+								:color="task.done && 'grey' || 'success'"
+								>
+								</v-checkbox>
+							</v-list-item-action>
+							<template v-if="!task.editing">
+								<v-list-item-content class="mr-2">
+									<div
+									:class="task.done && 'grey--text' || 'success--text'"
+									class="ml-4"
+									v-text="task.title"
+									@click="task.editing = true"
+									></div>
+								</v-list-item-content>
+							</template>
+							<v-text-field
+								:value="task.title"
+								@blur="doneEdit($event, index)"
+								@keyup.enter="doneEdit($event, index)"
+								@keyup.esc="cancelEdit(index)"
+								class="ml-1"
+								color="primary"
+								autofocus
+								hide-details
+								flat
+								solo
+								v-else
+							></v-text-field>
 
-						<v-scroll-x-transition>
+							<v-scroll-x-transition>
+								<v-icon
+								v-if="task.done"
+								color="success"
+								>
+								done
+								</v-icon>
+							</v-scroll-x-transition>
+
 							<v-icon
-							v-if="task.done"
-							color="success"
-							class="ml-4"
+							:key="`${task.id}-delete`"
+							@click="removeTask(task.id)"
+							class="ml-5"
 							>
-							done
+							delete
 							</v-icon>
-						</v-scroll-x-transition>
-
-						<v-icon
-						:key="`${task.id}-delete`"
-						@click="removeTask(task.id)"
-						class="ml-8"
-						>
-						delete
-						</v-icon>
-					</v-list-item>
-				</template>
-			</v-slide-y-transition>
-		</v-card>
-
-		<v-snackbar
-			v-model="snackbar"
-			:multi-line="true"
-			:color="alertColor"
-			>
-			{{ text }}
-			<template v-slot:action="{ attrs }">
-				<v-btn
-				color="white"
-				text
-				v-bind="attrs"
-				@click="snackbar = false"
-				>
-				Close
-				</v-btn>
-			</template>
-		</v-snackbar>
-
+						</v-list-item>
+					</v-card>
+				</transition-group>
+			</draggable>
+		</template>
 	</v-container>
 </template>
 
 <script>
 	import api from '../services/api';
+	import draggable from 'vuedraggable';
 
 	export default {
 
+		components: {
+			draggable,
+		},
 		data: () => ({
 			tasks: [],
 			task: null,
-			snackbar: false,
-			text: 'Alert message',
-			alertColor: 'success',
 		}),
 		created() {
 			api.get('api/task')
@@ -160,10 +139,7 @@
 					task.editing = false
 					this.tasks.push(task)
 				}))
-				.catch(err => {
-					console.error(err.data)
-					this.showAlert('Tasks could not loaded!', 'error')
-				}
+				.catch(err => console.error(err.data)
 			);
 		},
 		computed: {
@@ -197,12 +173,8 @@
 							editing: false,
 						})
 						this.task = null
-						this.showAlert('Task was created!')
 					})
-					.catch(err => {
-						console.error(err.data)
-						this.showAlert('Task could not created!', 'error')
-					}
+					.catch(err => console.error(err.data)
 				);
 			},
 			updateTask (task) {
@@ -210,12 +182,8 @@
 					.then((res) => {
 						const itemIndex = this.tasks.findIndex(element => element.id === res.data.id)
 						this.tasks[itemIndex] = task
-						this.showAlert('Text was updated!')
 					})
-					.catch(err => {
-						console.error(err.data)
-						this.showAlert('Task could not updated!', 'error')
-					}
+					.catch(err => console.error(err.data)
 				);
 			},
 			removeTask (id) {
@@ -223,12 +191,8 @@
 					.then(() => {
 						const itemIndex = this.tasks.findIndex(element => element.id === id)
 						this.tasks.splice(itemIndex, 1)
-						this.showAlert('Task was deleted!')
 					})
-					.catch(err => {
-						console.error(err.data)
-						this.showAlert('Task could not deleted!', 'error')
-					}
+					.catch(err => console.error(err.data)
 				);
 			},
 			doneEdit (event, index) {
@@ -245,11 +209,6 @@
 			cancelEdit (index) {
 				this.tasks[index].editing = false
 			},
-			showAlert (message='Success', type='success') {
-				this.snackbar = true
-				this.text = message
-				this.alertColor = type
-			}
 		},
 	}
 </script>
@@ -260,5 +219,8 @@
 }
 .divider-item {
 	margin: 0 7%
+}
+.v-sheet.v-card {
+    border-radius: 0;
 }
 </style>
