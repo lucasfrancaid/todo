@@ -95,7 +95,7 @@ Após rodar os comandos, os apps Backend e Frontend estarão disponíveis nas se
 
 *Obs: Além de utilizar o back-end pelo browser, você também pode consumir a API pelo postman:*
 
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/15c632cbe5d7bbab692f)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ab48013b4c23ceb3666c)
 
 <br>
 
