@@ -4,11 +4,24 @@ services:
   server:
     container_name: todo_backend
     build: ./backend
+    depends_on:
+      - postgres
     ports:
       - '8000:8000'
     volumes:
       - ./backend:/usr/app
+    env_file: ./backend/.env
     command: python manage.py runserver 0.0.0.0:8000
+
+  postgres:
+    container_name: todo_postgres
+    image: postgres
+    environment: 
+      POSTGRES_DB: todo
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
 
   web:
     container_name: todo_frontend
