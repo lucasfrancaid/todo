@@ -41,6 +41,23 @@ To do, é um projeto criado com Django Rest Framework e Vue.js na intenção de 
 <br>
 
 ## 🚀 Iniciando o projeto
+Existem duas maneiras de executar o projeto, a maneira legal e a maneira chata.
+
+
+### Usando Docker (É legal, um comando, produtividade.. e se não sabe usar docker tá na hora de aprender):
+Para iniciar com Docker, tenha instalado em sua máquina o Docker e o Docker Compose. Tudo certinho? Então execute na pasta raíz do projeto:
+```bash
+sudo docker-compose up
+```
+
+Backend e Frontend disponíveis nas seguintes URLs:
+<br>
+- <b>Back-end:</b> http://localhost:8000/api/task
+- <b>Front-end:</b> http://localhost:8080/
+
+<br>
+
+### Agora se você escolheu o método chato... siga os passos abaixo:
 Para executar o projeto, é só seguir a lista de tarefas e executar os comandos de cada passo em um terminal:
 
 <p align="center">
@@ -48,7 +65,7 @@ Para executar o projeto, é só seguir a lista de tarefas e executar os comandos
 </p>
 
 ```bash
-$ git clone https://github.com/lucasfrancaid/Todo.git
+$ git clone https://github.com/lucasfrancaid/todo.git
 ```
 
 <p align="center">
@@ -56,7 +73,7 @@ $ git clone https://github.com/lucasfrancaid/Todo.git
 </p>
 
 ```bash
-$ cd Todo/backend
+$ cd todo/backend
 $ python3 -m venv .venv
 $ source .venv/bin/activate
 $ pip install -r requirements.txt
@@ -68,13 +85,12 @@ $ pip install -r requirements.txt
 
 ```bash
 $ python manage.py migrate
-$ python manage.py createsuperuser
 $ python manage.py runserver
 ```
 
 <br>
 
-Backend funcionando, agora abra um novo terminal para executar os comando para rodar o frontend, acesse a pasta *Todo/frontend* e execute os comandos do próximo passo:
+Backend funcionando, agora abra um novo terminal para executar os comando para rodar o frontend, acesse a pasta *todo/frontend* e execute os comandos do próximo passo:
 
 <p align="center">
   <img src="https://gist.githubusercontent.com/lucasfrancaid/13f62a71b0ba106a0dd5c5f6ca2d9dff/raw/a885a30f10f26f87e37ea875cffd8d5c3df7cb9b/04_todo_runvue.png" alt="step-4" />
@@ -109,18 +125,17 @@ E por último..
 
 ## 🆙 Como contribuir
 
-- Faça um fork desse repositório;
-- Crie uma branch com sua feature: $ git checkout -b nome-feature
-- Faça o commit das alterações realizadas: $ git commit -m "feat: Minha nova feature"
-- Faça push para a sua branch: $ git push origin minha-feature
-- Depois que o merge da sua pull request for feito, você podera deletar a sua branch.
+- Faça um fork desse repositório
+- Crie uma branch com sua feature, para isso execute ```git checkout -b nome-feature```
+- Desenvolva sua implementação, adicione seus commits e execute ```git push origin nome-feature```
+- Abra um Pull Request explanando sua implementação
 
 <br>
 
 ## 📬 Contato
 
 <b>Lucas França</b> <br/>
-Linkedin: https://www.linkedin.com/in/lucasfrancaid/
+https://lucasfrancaid.com.br/
 
 <br>
 
